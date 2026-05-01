@@ -1,0 +1,30 @@
+
+body,input[type=button] {
+    font-family: 'Lucida Sans', Helvetica, Arial, sans-serif;
+    background-color: #e0e0ff;
+    color: black;
+}
+table {
+    border-collapse: collapse;
+}
+tr, td, th {
+    border: 1px solid black;
+}
+#msg {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    color: #c00000;
+    font-weight: bold;
+    width: max-content;
+}
+a {
+    text-decoration: none;
+}
+
+#imgHolder {
+    text-align: center;
+}
+
+#imgHolder >  img {
+    border: 1px solid black;
+}
