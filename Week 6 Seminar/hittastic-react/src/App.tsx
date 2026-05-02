@@ -14,6 +14,8 @@ function App() {
     const [artist, setArtist] = useState('');
     const [songs, setSongs] = useState<Song[]>([]);
 
+    
+
     async function searchSongs() {
         if (artist.trim() === '') {
             alert('Please enter an artist name');

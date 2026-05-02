@@ -1,4 +1,6 @@
-import { useState } from 'react';
+import { json } from 'body-parser';
+import { response } from 'express';
+import { useEffect, useState } from 'react';
 
 interface Song {
     id: number;
@@ -18,6 +20,57 @@ export default function App() {
 
     const [artist, setArtist] = useState('');
     const [songs, setSongs] = useState<Song[]>([]);
+
+    useEffect(() => {
+        fetch('/login')
+        .then(response => response.json())
+        .then(json => {
+            setUsername(json.username);
+        })
+        .catch(error => {
+            console.log(error);
+            setUsername(null)
+        })
+    }, []);
+
+    async function doLogin() {
+        try {
+            const response = await fetch('/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    username: loginUsername,
+                    password: loginPassword
+                })
+            });
+            if (response.status === 200) {
+                const json = await response.json();
+                setUsername(json.username);
+                setLoginPassword('');
+            } else {
+                alert('Login Faile');
+                setUsername(null)
+            }
+        } catch (error) {
+            console.log(error);
+            alert('Error during login');
+            setUsername(null);
+        }
+    }
+
+    async function doLogout() {
+        try {
+            await fetch('/logout', {
+                method: 'POST'
+            });
+            setUsername(null);
+        } catch (error) {
+            console.log(error);
+            alert('Error during logout')
+        }
+    }
 
     async function searchSongs() {
         if (artist.trim() === '') {

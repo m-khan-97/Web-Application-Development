@@ -13,7 +13,29 @@ app.use(express.json());
 const db = new Database("wadsongs.db");
 
 // -------------------- SESSION SETUP --------------------
+const sessDb = new Database('session.db');
 
+const SqliteStore = betterSqlite3Session(expressSession, sessDb);
+
+app.use(expressSession({
+    store: new SqliteStore(),
+    secret: 'BinnieAndClyde',
+    resave: true,
+    unset: 'destroy',
+    proxy: true,
+    cookie: {
+        maxAge: 600000,
+        httpOnly: false
+    }
+}));
+
+function authMiddleware(req: Request, res: Response, next: NextFunction) {
+    if (req.session.username) {
+        next();
+    } else {
+        res.status(401).json({ error: 'You must be logged in' })
+    }
+}
 
 
 // -------------------- LOGIN / LOGOUT ROUTES --------------------
